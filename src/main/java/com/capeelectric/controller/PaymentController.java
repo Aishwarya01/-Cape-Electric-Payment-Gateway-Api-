@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import com.capeelectric.config.PaymentConfig;
 import com.capeelectric.model.Customer;
 import com.capeelectric.model.RazorPay;
 import com.capeelectric.model.Response;
+import com.capeelectric.service.PaymentService;
 import com.google.gson.Gson;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
@@ -31,36 +33,50 @@ import com.razorpay.RazorpayException;
  */
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin("http://localhost:4200")
 public class PaymentController {
 	
 	@Autowired
 	private PaymentConfig paymentConfig;
 	
+	@Autowired
+	private PaymentService paymentService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
 	private RazorpayClient client;
+	
 	private static Gson gson = new Gson();
 
 	@PostMapping(value = "/createPayment") 
 	public ResponseEntity<String> createOrder(@RequestBody Customer customer) throws RazorpayException {
 		this.client = new RazorpayClient(paymentConfig.getSecretId(), paymentConfig.getSecretKey());
 		try {
-			logger.debug(null);
+			logger.debug("Order creation started");
 			Order order = createRazorPayOrder(customer.getAmount());
 			RazorPay razorPay = getRazorPay((String) order.get("id"), customer);
-
+			customer.setOrderId(order.get("id"));
+			paymentService.addPaymentDetails(customer);
 			return new ResponseEntity<String>(gson.toJson(getResponse(razorPay, 200)), HttpStatus.OK);
 		} catch (RazorpayException e) {
-			e.printStackTrace();
+			logger.debug("Order creation failed"+ e.getMessage());
+			return new ResponseEntity<String>(gson.toJson(getResponse(new RazorPay(), 500)), HttpStatus.EXPECTATION_FAILED);
 		}
-		return new ResponseEntity<String>(gson.toJson(getResponse(new RazorPay(), 500)), HttpStatus.EXPECTATION_FAILED);
 	}
 
-	@GetMapping(value = "/fetchOrder/{orderId}")
-	public ResponseEntity<String> fetchOrder(@PathVariable String orderId) throws RazorpayException {
-		this.client = new RazorpayClient(paymentConfig.getSecretId(), paymentConfig.getSecretKey());
-		Order fetch = client.Orders.fetch(orderId);
-		return new ResponseEntity<String>(fetch.get("status").toString(), HttpStatus.OK);
+//	@GetMapping(value = "/fetchOrder/{orderId}")
+//	public ResponseEntity<String> fetchOrder(@PathVariable String orderId) throws RazorpayException {
+//		this.client = new RazorpayClient(paymentConfig.getSecretId(), paymentConfig.getSecretKey());
+//		Order fetch = client.Orders.fetch(orderId);
+//		return new ResponseEntity<String>(fetch.get("status").toString(), HttpStatus.OK);
+//	}
+	
+	@GetMapping(value = "/verifyPayment/{orderId}")
+	public void updatePaymentStatus(@PathVariable String orderId) throws RazorpayException {
+		paymentService.updatePaymentStatus(
+				new RazorpayClient(paymentConfig.getSecretId(), paymentConfig.getSecretKey()).Orders.fetch(orderId)
+						.get("status").toString(),
+				orderId);
 	}
 
 	private Response getResponse(RazorPay razorPay, int statusCode) {
@@ -72,19 +88,12 @@ public class PaymentController {
 
 	private RazorPay getRazorPay(String orderId, Customer customer) {
 		RazorPay razorPay = new RazorPay();
-		 razorPay.setApplicationFee(convertRupeeToPaise(customer.getAmount()));
-		 razorPay.setCustomerName(customer.getCustomerName());
-		 razorPay.setCustomerEmail(customer.getEmail());
-		// razorPay.setMerchantName("Test");
-		// razorPay.setPurchaseDescription("TEST PURCHASES");
+		razorPay.setApplicationFee(convertRupeeToPaise(customer.getAmount()));
+		razorPay.setCustomerName(customer.getCustomerName());
+		razorPay.setCustomerEmail(customer.getCustomerEmail());
 		razorPay.setRazorpayOrderId(orderId);
 		razorPay.setSecretKey(paymentConfig.getSecretId());
-		// razorPay.setImageURL("/logo");
-		// razorPay.setTheme("#F37254");
 		razorPay.setNotes("notes" + orderId);
-		razorPay.setInspectorRegisterId(customer.getInspectorRegisterId());
-		System.out.println(customer.getInspectorRegisterId());
-
 		return razorPay;
 	}
 
