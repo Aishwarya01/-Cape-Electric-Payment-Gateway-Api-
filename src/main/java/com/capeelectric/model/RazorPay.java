@@ -6,7 +6,6 @@ import java.io.Serializable;
  * @author CAPE-SOFTWARE
  *
  */
-
 public class RazorPay implements Serializable {
 
 	private static final long serialVersionUID = 1L;

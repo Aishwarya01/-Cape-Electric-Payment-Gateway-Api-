@@ -2,7 +2,11 @@ package com.capeelectric.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
+/**
+ * 
+ * @author capeelectricsoftware
+ *
+ */
 @Component
 public class OtpConfig {
 

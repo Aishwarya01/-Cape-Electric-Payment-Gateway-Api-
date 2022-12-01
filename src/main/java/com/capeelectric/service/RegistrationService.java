@@ -6,6 +6,11 @@ import com.capeelectric.exception.RegistrationException;
 import com.capeelectric.model.RegisterationMeter;
 import com.capeelectric.request.AuthenticationRequest;
 
+/**
+ * 
+ * @author capeelectricsoftware
+ *
+ */
 public interface RegistrationService {
 
 	public RegisterationMeter addRegistration(RegisterationMeter registerationMeter) throws RegistrationException;

@@ -52,7 +52,6 @@ public class RegistrationServiceImpl implements RegistrationService {
 			Optional<RegisterationMeter> registerRepo = registerRepository
 					.findByUsername(registerationMeter.getUsername());
 			if (!registerRepo.isPresent()) {
-//				sendSMS(registerationMeter.getContactNumber());
 				registerationMeter.setPassword(passwordEncoder.encode(registerationMeter.getPassword()));
 				registerationMeter.setRole("user");
 				registerationMeter.setCreatedDate(LocalDateTime.now());
@@ -81,7 +80,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			return registerRepo;
 		} else {
 			logger.error("RetrieveRegistration is Failed , Because Invalid Inputs");
-			throw new RegistrationException("Invalid Inputs");
+			throw new RegistrationException("Invalid UserName");
 		}
 
 	}
@@ -93,6 +92,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			Optional<RegisterationMeter> registerRepo = registerRepository.findByUsername(userName);
 			if (registerRepo.isPresent() ) {
 				registerRepo.get().setContactNumber(mobilenumber);
+				logger.debug("Successfully Registration Information updated");
 				registerRepository.save(registerRepo.get());
 			}
 		} else {
@@ -127,22 +127,6 @@ public class RegistrationServiceImpl implements RegistrationService {
 		}
 
  	}
-
-//	private RegisterationMeter sendingSMS(Optional<RegisterationMeter> registerDetails) throws RegistrationException {
-//		logger.debug("Sending SMS for Forgot Password Starts");
-//		if(registerDetails != null && registerDetails.get()!= null && registerDetails.get().getContactNumber() != null) {
-//			String sessionKey = otpSend(registerDetails.get().getContactNumber());
-//			RegisterationMeter register = registerDetails.get();
-////			register.setOtpSessionKey(sessionKey);
-//			register.setUpdatedDate(LocalDateTime.now());
-//			register.setUpdatedBy(registerDetails.get().getUsername());
-//			registerRepository.save(register);
-//			return register;
-//		}else {
-//			logger.error("Email/Contact Number is required");
-//			throw new RegistrationException("Email/Contact Number is required");
-//		}
-//	}
 	
 	@Override
 	public String sendSMS(String mobileNumber) throws RegistrationException {

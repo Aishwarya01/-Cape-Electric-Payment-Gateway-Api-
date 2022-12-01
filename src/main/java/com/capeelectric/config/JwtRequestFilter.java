@@ -18,7 +18,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.ExpiredJwtException;
-
+/**
+ * 
+ * @author capeelectricsoftware
+ *
+ */ 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 

@@ -1,20 +1,20 @@
 package com.capeelectric.exception;
+
 /**
  * 
  * @author capeelectricsoftware
  *
  */
-public class AuthenticationException extends Throwable {
+public class PaymentException extends Throwable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String message;
 
-	public AuthenticationException() {
-
+	public PaymentException() {
 	}
 
-	public AuthenticationException(String message) {
+	public PaymentException(String message) {
 		super();
 		this.message = message;
 	}

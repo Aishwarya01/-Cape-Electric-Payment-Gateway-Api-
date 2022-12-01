@@ -7,12 +7,13 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+/**
+ * 
+ * @author capeelectricsoftware
+ *
+ */
 public class RegisterDetails extends RegisterationMeter implements UserDetails {
 
-	/**
-	 * @author capeelectricsoftware
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private RegisterationMeter registerationMeter;

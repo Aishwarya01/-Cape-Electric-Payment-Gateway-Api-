@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capeelectric.config.PaymentConfig;
+import com.capeelectric.exception.PaymentException;
 import com.capeelectric.model.BuyRentMeter;
 import com.capeelectric.model.RazorPay;
 import com.capeelectric.model.Response;
@@ -47,7 +48,7 @@ public class PaymentController {
 	private static Gson gson = new Gson();
 
 	@PostMapping(value = "/createPayment") 
-	public ResponseEntity<String> createOrder(@RequestBody BuyRentMeter customer) throws RazorpayException {
+	public ResponseEntity<String> createOrder(@RequestBody BuyRentMeter customer) throws RazorpayException, PaymentException {
 		this.client = new RazorpayClient(paymentConfig.getSecretId(), paymentConfig.getSecretKey());
 		try {
 			logger.debug("Order creation started");

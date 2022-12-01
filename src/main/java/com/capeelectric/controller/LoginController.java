@@ -26,7 +26,11 @@ import com.capeelectric.response.AuthenticationResponseRegister;
 import com.capeelectric.service.impl.LoginServiceImpl;
 import com.capeelectric.service.impl.RefreshTokenService;
 import com.capeelectric.service.impl.RegistrationDetailsServiceImpl;
-
+/**
+ * 
+ * @author capeelectricsoftware
+ *
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class LoginController {
@@ -55,9 +59,7 @@ public class LoginController {
 	public AuthenticationResponseRegister createAuthenticationToken(
 			@RequestBody RefreshTokenRequest authenticationRequest)
 			throws Exception, AuthenticationException, RegistrationException {
-
 		logger.debug("Create Authenticate Token starts");
-
 		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 
 		final RegisterDetails registerDetails = registrationDetailsServiceImpl

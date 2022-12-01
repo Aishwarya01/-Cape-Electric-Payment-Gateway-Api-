@@ -11,6 +11,11 @@ import com.capeelectric.model.RegisterDetails;
 import com.capeelectric.model.RegisterationMeter;
 import com.capeelectric.repository.RegistrationRepository;
 
+/**
+ * 
+ * @author capeelectricsoftware
+ *
+ */
 @Service
 public class RegistrationDetailsServiceImpl extends RegisterationMeter implements UserDetailsService{
 

@@ -9,6 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 
+ * @author capeelectricsoftware
+ *
+ */
 @Entity
 @Table(name = "registeration_meter_table")
 public class RegisterationMeter {

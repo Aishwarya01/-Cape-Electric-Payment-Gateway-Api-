@@ -10,7 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.capeelectric.model.RegisterationMeter;
-
+/**
+ * 
+ * @author capeelectricsoftware
+ *
+ */
 @Service
 public class JwtRegisterDetailsService implements UserDetailsService {
 	@Autowired

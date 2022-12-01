@@ -6,7 +6,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.capeelectric.model.BuyRentMeter;
-
+/**
+ * 
+ * @author capeelectricsoftware
+ *
+ */
 @Repository
 public interface PaymentRepo extends CrudRepository<BuyRentMeter, Integer> {
 

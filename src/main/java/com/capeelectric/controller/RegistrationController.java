@@ -52,9 +52,8 @@ public class RegistrationController {
 	@PutMapping("/updateMobileNumber/{mobilenumber}/{username}")
 	public ResponseEntity<String> updateMobileNumber(@PathVariable String mobilenumber, @PathVariable String username)
 			throws RegistrationException {
-		logger.debug("Update Password starts");
+		logger.debug("updateMobileNumber starts ...");
 		registrationService.updateMobileNumber(mobilenumber, username);
-		logger.debug("AwsEmailService call Started");
 		return new ResponseEntity<String>("You have Successfully Updated Your MobileNumber", HttpStatus.OK);
 
 	}

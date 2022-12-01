@@ -12,6 +12,11 @@ import com.capeelectric.model.RegisterDetails;
 import com.capeelectric.request.RefreshTokenRequest;
 import com.capeelectric.response.AuthenticationResponseRegister;
 
+/**
+ * 
+ * @author capeelectricsoftware
+ *
+ */
 @Service
 public class LoginServiceImpl{
 
