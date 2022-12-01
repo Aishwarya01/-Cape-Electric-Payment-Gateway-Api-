@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.capeelectric.model.Customer;
+import com.capeelectric.model.BuyRentMeter;
 
 @Repository
-public interface PaymentRepo extends CrudRepository<Customer, Integer> {
+public interface PaymentRepo extends CrudRepository<BuyRentMeter, Integer> {
 
-	public Optional<Customer> findByOrderId(String orderId);
+	public Optional<BuyRentMeter> findByOrderId(String orderId);
 
 }

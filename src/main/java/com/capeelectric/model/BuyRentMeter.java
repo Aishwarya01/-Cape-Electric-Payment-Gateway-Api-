@@ -14,8 +14,8 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "cutomer_table")
-public class Customer implements Serializable {
+@Table(name = "rent_meter_table")
+public class BuyRentMeter implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,9 +23,6 @@ public class Customer implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "CUSTOMER_ID")
 	private Integer customerId;
-
-	@Column(name = "CUSTOMER_NAME")
-	private String customerName;
 
 	@Column(name = "CUSTOMER_EMAIL")
 	private String customerEmail;
@@ -36,11 +33,11 @@ public class Customer implements Serializable {
 	@Column(name = "AMOUNT")
 	private String amount;
 
-	@Column(name = "CUSTOMER_COMPANY")
-	private String customerCompany;
-
 	@Column(name = "ORDER_STATUS")
 	private String orderStatus;
+	
+	@Column(name = "METER_NAME")
+	private String meterName;
 	
 	@Column(name = "ORDER_ID")
 	private String orderId;
@@ -51,14 +48,6 @@ public class Customer implements Serializable {
 
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
-	}
-
-	public String getCustomerName() {
-		return customerName;
-	}
-
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
 	}
 
 	public String getCustomerEmail() {
@@ -85,14 +74,6 @@ public class Customer implements Serializable {
 		this.amount = amount;
 	}
 
-	public String getCustomerCompany() {
-		return customerCompany;
-	}
-
-	public void setCustomerCompany(String customerCompany) {
-		this.customerCompany = customerCompany;
-	}
-
 	public String getOrderStatus() {
 		return orderStatus;
 	}
@@ -107,6 +88,14 @@ public class Customer implements Serializable {
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
+	}
+
+	public String getMeterName() {
+		return meterName;
+	}
+
+	public void setMeterName(String meterName) {
+		this.meterName = meterName;
 	}
  
 }

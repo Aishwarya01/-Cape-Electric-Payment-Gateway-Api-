@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capeelectric.config.PaymentConfig;
-import com.capeelectric.model.Customer;
+import com.capeelectric.model.BuyRentMeter;
 import com.capeelectric.model.RazorPay;
 import com.capeelectric.model.Response;
 import com.capeelectric.service.PaymentService;
@@ -33,7 +32,6 @@ import com.razorpay.RazorpayException;
  */
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin("http://localhost:4200")
 public class PaymentController {
 	
 	@Autowired
@@ -49,7 +47,7 @@ public class PaymentController {
 	private static Gson gson = new Gson();
 
 	@PostMapping(value = "/createPayment") 
-	public ResponseEntity<String> createOrder(@RequestBody Customer customer) throws RazorpayException {
+	public ResponseEntity<String> createOrder(@RequestBody BuyRentMeter customer) throws RazorpayException {
 		this.client = new RazorpayClient(paymentConfig.getSecretId(), paymentConfig.getSecretKey());
 		try {
 			logger.debug("Order creation started");
@@ -86,10 +84,10 @@ public class PaymentController {
 		return response;
 	}
 
-	private RazorPay getRazorPay(String orderId, Customer customer) {
+	private RazorPay getRazorPay(String orderId, BuyRentMeter customer) {
 		RazorPay razorPay = new RazorPay();
 		razorPay.setApplicationFee(convertRupeeToPaise(customer.getAmount()));
-		razorPay.setCustomerName(customer.getCustomerName());
+//		razorPay.setCustomerName(customer.getCustomerName());
 		razorPay.setCustomerEmail(customer.getCustomerEmail());
 		razorPay.setRazorpayOrderId(orderId);
 		razorPay.setSecretKey(paymentConfig.getSecretId());
