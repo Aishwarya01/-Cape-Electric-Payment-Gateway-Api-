@@ -23,6 +23,9 @@ public class RegisterationMeter {
 	@Column(name = "REGISTER_ID")
 	private Integer registerId;
 
+	@Column(name = "FIRST_NAME")
+	private String firstName;
+	
 	@Column(name = "USER_NAME")
 	private String username;
 
@@ -120,6 +123,22 @@ public class RegisterationMeter {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getCustomerCompany() {
+		return customerCompany;
+	}
+
+	public void setCustomerCompany(String customerCompany) {
+		this.customerCompany = customerCompany;
 	}
 
 }

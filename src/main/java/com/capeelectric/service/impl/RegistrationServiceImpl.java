@@ -51,7 +51,10 @@ public class RegistrationServiceImpl implements RegistrationService {
 			logger.debug("AddingRegistration Starts with User : {} ", registerationMeter.getUsername());
 			Optional<RegisterationMeter> registerRepo = registerRepository
 					.findByUsername(registerationMeter.getUsername());
-			if (!registerRepo.isPresent()) {
+			Optional<RegisterationMeter> registerRepo1 = registerRepository
+					.findBycontactNumber(registerationMeter.getContactNumber());
+			
+			if (!registerRepo.isPresent()&&!registerRepo1.isPresent()) {
 				registerationMeter.setPassword(passwordEncoder.encode(registerationMeter.getPassword()));
 				registerationMeter.setRole("user");
 				registerationMeter.setCreatedDate(LocalDateTime.now());
@@ -76,8 +79,18 @@ public class RegistrationServiceImpl implements RegistrationService {
 	public Optional<RegisterationMeter> retrieveRegistration(String userName) throws RegistrationException {
 		if (userName != null) {
 			logger.debug("RetrieveRegistration Started with User : {} ", userName);
+			
 			Optional<RegisterationMeter> registerRepo = registerRepository.findByUsername(userName);
-			return registerRepo;
+			Optional<RegisterationMeter> registerRepo1 = registerRepository.findBycontactNumber(userName);
+			if(registerRepo.isPresent()&& registerRepo.get().getUsername()!=null) {
+				return registerRepo;
+			}else if(registerRepo1.isPresent()&& registerRepo1.get().getContactNumber()!=null) {
+				return registerRepo;
+			}
+			else {
+				throw new RegistrationException("UserName Not Exist");
+				
+			}
 		} else {
 			logger.error("RetrieveRegistration is Failed , Because Invalid Inputs");
 			throw new RegistrationException("Invalid UserName");
@@ -130,8 +143,10 @@ public class RegistrationServiceImpl implements RegistrationService {
 	
 	@Override
 	public String sendSMS(String mobileNumber) throws RegistrationException {
+		
 
 		if (isValidMobileNumber(mobileNumber)) {
+			System.out.println("helllllllllllllll");
 			logger.debug("RegistrationService otpSend() function called [{}]", "Cape-Electric-SMS-Api");
 			ResponseEntity<String> sendOtpResponse = restTemplate.exchange(otpConfig.getSendOtp() + mobileNumber,
 					HttpMethod.GET, null, String.class);
@@ -152,6 +167,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 	}
 	
 	private boolean isValidMobileNumber(String mobileNumber) {
+		System.out.println("mobile numberrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
 		Pattern p = Pattern
 				.compile("^(\\+\\d{1,3}( )?)?(\\s*[\\-]\\s*)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
 		Matcher m = p.matcher(mobileNumber);

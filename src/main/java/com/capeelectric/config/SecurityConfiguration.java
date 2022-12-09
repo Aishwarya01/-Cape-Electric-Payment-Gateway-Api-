@@ -69,7 +69,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().antMatchers("/api/v1/authenticate",
 						"/api/v1/addRegistration",
 						"/api/v1/refreshToken",
-						"/api/v1/health")
+						"/api/v1/health",
+						"/api/v1/retrieveRegistration/**",
+						"/api/v1/sendSMS/**",
+						"/api/v1/verifyOTP")
 				.permitAll().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().

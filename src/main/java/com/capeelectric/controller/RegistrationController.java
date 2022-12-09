@@ -58,7 +58,7 @@ public class RegistrationController {
 
 	}
 	
-	@PutMapping("/sendSMS/{mobileNumber}")
+	@GetMapping("/sendSMS/{mobileNumber}")
 	public ResponseEntity<String> sendSMS(@PathVariable String mobileNumber)
 			throws RegistrationException {
 		logger.debug("sendingSMS starts !!!");

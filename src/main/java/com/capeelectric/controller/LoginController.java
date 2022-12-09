@@ -60,11 +60,11 @@ public class LoginController {
 			@RequestBody RefreshTokenRequest authenticationRequest)
 			throws Exception, AuthenticationException, RegistrationException {
 		logger.debug("Create Authenticate Token starts");
-		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
-
+		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+ 
 		final RegisterDetails registerDetails = registrationDetailsServiceImpl
-				.loadUserByUsername(authenticationRequest.getEmail());
-
+				.loadUserByUsername(authenticationRequest.getUsername());
+         
 		final String token = jwtTokenUtil.generateToken(registerDetails);
 		logger.debug("Create Authenticate Token ends");
 		return AuthenticationResponseRegister.builder().jwttoken(token)
@@ -81,10 +81,20 @@ public class LoginController {
 
 	private void authenticate(String username, String password)
 			throws Exception, AuthenticationException, RegistrationException {
-		Optional<RegisterationMeter> registerRepo = registrationRepository.findByUsername(username);
+		
+		Optional<RegisterationMeter> registerRepo = null;
+		
+		
+		     if(username.contains("@")) {
+		    	 registerRepo=registrationRepository.findByUsername(username);
+		     }
+		     else {
+		    	 registerRepo=registrationRepository.findBycontactNumber(username);
+		     }
+		     
 		if (registerRepo.isPresent()) {
 			try {
-				authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+				authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(registerRepo.get().getUsername(), password));
 				logger.debug("Authentication done sucessfully");
 			} catch (DisabledException e) {
 				logger.error("Authentication failed : " + e.getMessage());
@@ -100,3 +110,4 @@ public class LoginController {
 		}
 	}
 }
+    

@@ -15,5 +15,6 @@ import com.capeelectric.model.RegisterationMeter;
 public interface RegistrationRepository extends CrudRepository<RegisterationMeter, Integer> {
 
 	public Optional<RegisterationMeter> findByUsername(String username);
+	public Optional<RegisterationMeter> findBycontactNumber(String username);
 
 }

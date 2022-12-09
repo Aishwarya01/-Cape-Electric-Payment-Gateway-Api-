@@ -29,7 +29,15 @@ public class RegistrationDetailsServiceImpl extends RegisterationMeter implement
 	public RegisterDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		logger.debug("Load User By UserName starts");
 		
-		  RegisterationMeter register = registrationRepository.findByUsername(username).get();
+		 RegisterationMeter register=null;
+		if(username.contains("@")) {
+			register=registrationRepository.findByUsername(username).get();
+		}
+		else {
+			register=registrationRepository.findBycontactNumber(username).get();
+		}
+		
+		  
 		  
 		  RegisterDetails registerDetails = null;
 		if (register != null) {
