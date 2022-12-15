@@ -127,7 +127,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			logger.debug("Cape-Electric-SMS-Api service OTP_verify Response [{}]", otpVerifyResponse);
 
 			if (!otpVerifyResponse.getBody().matches("(.*)Success(.*)")) {
-				logger.error("Cape-Electric-SMS-Api service call faild [{}]" + otpVerifyResponse.getBody());
+				logger.error("Cape-Electric-SMS-Api service call failed [{}]" + otpVerifyResponse.getBody());
  				return "OTP MisMatched";
 			} else {
  				logger.debug("Given OTP matched:{}", request.getOtp());

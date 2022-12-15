@@ -26,6 +26,65 @@ public class RegisterationMeter {
 	@Column(name = "FIRST_NAME")
 	private String firstName;
 	
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	@Column(name ="LAST_NAME")
+	private String lastName;
+	
 	@Column(name = "USER_NAME")
 	private String username;
 
@@ -40,6 +99,25 @@ public class RegisterationMeter {
 
 	@Column(name = "CUSTOMER_COMPANY")
 	private String customerCompany;
+	
+	@Column(name = "ADDRESS")
+	private String address;
+	
+	@Column(name = "SHIPPING_ADDRESS")
+	private String shippingAddress;
+	
+
+	@Column(name = "DISTRICT")
+	private String district;
+
+	@Column(name = "COUNTRY")
+	private String country;
+
+	@Column(name = "PINCODE")
+	private String pinCode;
+
+	@Column(name = "STATE")
+	private String state;
 
 	@Column(name = "CREATED_DATE")
 	private LocalDateTime createdDate;

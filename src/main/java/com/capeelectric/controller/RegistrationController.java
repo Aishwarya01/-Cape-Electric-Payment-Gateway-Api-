@@ -49,6 +49,8 @@ public class RegistrationController {
 		return registrationService.retrieveRegistration(userName);
 	}
 
+
+	
 	@PutMapping("/updateMobileNumber/{mobilenumber}/{username}")
 	public ResponseEntity<String> updateMobileNumber(@PathVariable String mobilenumber, @PathVariable String username)
 			throws RegistrationException {

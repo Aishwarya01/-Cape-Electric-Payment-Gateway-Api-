@@ -30,7 +30,7 @@ public class RegistrationDetailsServiceImpl extends RegisterationMeter implement
 		logger.debug("Load User By UserName starts");
 		
 		 RegisterationMeter register=null;
-		if(username.contains("@")) {
+		if(username.split("@").length > 1) {
 			register=registrationRepository.findByUsername(username).get();
 		}
 		else {

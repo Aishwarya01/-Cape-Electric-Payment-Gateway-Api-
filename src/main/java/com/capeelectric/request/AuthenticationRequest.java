@@ -10,6 +10,15 @@ public class AuthenticationRequest {
 	private String password;
 	private String otp;
 	private String otpSession;
+	private String mobileNumber;
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
 
 	public String getEmail() {
 		return email;

@@ -1,11 +1,14 @@
 package com.capeelectric.controller;
 
+import static org.springframework.http.HttpStatus.OK;
+
 import java.time.Instant;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -60,11 +63,17 @@ public class LoginController {
 			@RequestBody RefreshTokenRequest authenticationRequest)
 			throws Exception, AuthenticationException, RegistrationException {
 		logger.debug("Create Authenticate Token starts");
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
- 
-		final RegisterDetails registerDetails = registrationDetailsServiceImpl
-				.loadUserByUsername(authenticationRequest.getUsername());
-         
+		final RegisterDetails registerDetails;
+		if(null != authenticationRequest.getPassword() && null != authenticationRequest.getUsername() ) {
+			authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+			registerDetails = registrationDetailsServiceImpl
+					.loadUserByUsername(authenticationRequest.getUsername());
+			
+		}
+		else {
+		registerDetails = registrationDetailsServiceImpl
+				.loadUserByUsername(authenticationRequest.getMobileNumber());
+		}
 		final String token = jwtTokenUtil.generateToken(registerDetails);
 		logger.debug("Create Authenticate Token ends");
 		return AuthenticationResponseRegister.builder().jwttoken(token)
@@ -73,6 +82,12 @@ public class LoginController {
 				.registerationMeter(registerDetails.getRegister()).build();
 
 	}
+	
+	@PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
+        return ResponseEntity.status(OK).body("Refresh Token Deleted Successfully!!");
+    }
 
 	@PostMapping("/refreshToken")
 	public AuthenticationResponseRegister refreshTokens(@RequestBody RefreshTokenRequest refreshTokenRequest) {
