@@ -68,6 +68,14 @@ public class RegistrationController {
 		
 	}
 	
+	@GetMapping("/sendSMSUsername/{username}")
+	public ResponseEntity<String> sendSMSUsername(@PathVariable String username)
+			throws RegistrationException {
+		logger.debug("sendingSMS starts !!!");
+		return new ResponseEntity<String>(registrationService.sendSMSUsername(username), HttpStatus.OK);
+		
+	}
+	
 	@PutMapping("/verifyOTP")
 	public ResponseEntity<String> verifyOTP(@RequestBody AuthenticationRequest authenticationRequest)
 			throws Exception {
