@@ -42,14 +42,6 @@ public class RegisterationMeter {
 		this.address = address;
 	}
 
-	public String getShippingAddress() {
-		return shippingAddress;
-	}
-
-	public void setShippingAddress(String shippingAddress) {
-		this.shippingAddress = shippingAddress;
-	}
-
 	public String getDistrict() {
 		return district;
 	}
@@ -102,9 +94,6 @@ public class RegisterationMeter {
 	
 	@Column(name = "ADDRESS")
 	private String address;
-	
-	@Column(name = "SHIPPING_ADDRESS")
-	private String shippingAddress;
 	
 
 	@Column(name = "DISTRICT")

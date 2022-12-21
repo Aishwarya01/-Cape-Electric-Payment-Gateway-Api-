@@ -30,6 +30,64 @@ public class BuyRentMeter implements Serializable {
 	@Column(name = "CUSTOMER_PHONENUMBER")
 	private String customerPhoneNumber;
 
+	@Column(name = "ADDRESS")
+	private String shippingAddress;
+	
+
+	@Column(name = "DISTRICT")
+	private String district;
+
+	@Column(name = "COUNTRY")
+	private String country;
+
+	@Column(name = "PINCODE")
+	private String pinCode;
+
+	@Column(name = "STATE")
+	private String state;
+	
+
+
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	@Column(name = "AMOUNT")
 	private String amount;
 

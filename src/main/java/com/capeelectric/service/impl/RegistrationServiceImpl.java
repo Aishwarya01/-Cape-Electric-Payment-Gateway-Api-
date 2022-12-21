@@ -146,7 +146,6 @@ public class RegistrationServiceImpl implements RegistrationService {
 		
 
 		if (isValidMobileNumber(mobileNumber)) {
-			System.out.println("helllllllllllllll");
 			logger.debug("RegistrationService otpSend() function called [{}]", "Cape-Electric-SMS-Api");
 			ResponseEntity<String> sendOtpResponse = restTemplate.exchange(otpConfig.getSendOtp() + mobileNumber,
 					HttpMethod.GET, null, String.class);
@@ -167,7 +166,6 @@ public class RegistrationServiceImpl implements RegistrationService {
 	}
 	
 	private boolean isValidMobileNumber(String mobileNumber) {
-		System.out.println("mobile numberrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
 		Pattern p = Pattern
 				.compile("^(\\+\\d{1,3}( )?)?(\\s*[\\-]\\s*)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
 		Matcher m = p.matcher(mobileNumber);
