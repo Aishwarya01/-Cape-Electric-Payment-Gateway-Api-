@@ -165,7 +165,30 @@ public class RegistrationServiceImpl implements RegistrationService {
 		
 	}
 	
+	
+	@Override
+	public String sendSMSUsername(String username) throws RegistrationException {
+
+		if (null != username) {
+			Optional<RegisterationMeter> registerRepo = registerRepository.findByUsername(username);
+			
+			if (registerRepo.isPresent()) {
+				return sendSMS(registerRepo.get().getContactNumber());
+			} else {
+				logger.error("Contact Number is Invalid");
+				throw new RegistrationException("Contact Number is Invalid");
+			}
+		} else {
+			logger.error("Contact Number is Invalid");
+			throw new RegistrationException("Contact Number is Invalid");
+		}
+
+	}
+	
+	
+	
 	private boolean isValidMobileNumber(String mobileNumber) {
+		
 		Pattern p = Pattern
 				.compile("^(\\+\\d{1,3}( )?)?(\\s*[\\-]\\s*)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
 		Matcher m = p.matcher(mobileNumber);

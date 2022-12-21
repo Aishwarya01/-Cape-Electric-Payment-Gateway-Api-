@@ -20,6 +20,8 @@ public interface RegistrationService {
 	public void updateMobileNumber(String mobilenumber,String userName) throws RegistrationException;
 
 	public String sendSMS(String mobileNumber) throws RegistrationException;
+	
+	public String sendSMSUsername(String userName) throws RegistrationException;
 
 	public String verifyOtpForSavingContactNumber(AuthenticationRequest request) throws Exception;
 }
