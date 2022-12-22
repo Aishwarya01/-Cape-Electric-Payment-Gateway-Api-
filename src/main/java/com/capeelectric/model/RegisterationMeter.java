@@ -95,6 +95,28 @@ public class RegisterationMeter {
 	@Column(name = "ADDRESS")
 	private String address;
 	
+	@Column(name = "GST_NUMBER")
+	private String gstNumber;
+	
+	public String getGstNumber() {
+		return gstNumber;
+	}
+
+	public void setGstNumber(String gstNumber) {
+		this.gstNumber = gstNumber;
+	}
+
+	public String getPurchaseType() {
+		return purchaseType;
+	}
+
+	public void setPurchaseType(String purchaseType) {
+		this.purchaseType = purchaseType;
+	}
+
+	@Column(name = "PURCHASE_TYPE")
+	private String purchaseType;
+	
 
 	@Column(name = "DISTRICT")
 	private String district;
