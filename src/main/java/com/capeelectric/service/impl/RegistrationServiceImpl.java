@@ -49,11 +49,18 @@ public class RegistrationServiceImpl implements RegistrationService {
 	public RegisterationMeter addRegistration(RegisterationMeter registerationMeter) throws RegistrationException {
 		if (null != registerationMeter && null !=registerationMeter.getUsername()) {
 			logger.debug("AddingRegistration Starts with User : {} ", registerationMeter.getUsername());
-			Optional<RegisterationMeter> registerRepo = registerRepository
+			Optional<RegisterationMeter> registerRepo;
+			Optional<RegisterationMeter> registerRepo1;
+			try {
+			registerRepo = registerRepository
 					.findByUsername(registerationMeter.getUsername());
-			Optional<RegisterationMeter> registerRepo1 = registerRepository
-					.findBycontactNumber(registerationMeter.getContactNumber());
-			
+			 registerRepo1 = registerRepository
+					.findByContactNumber(registerationMeter.getContactNumber());
+			}
+			catch(Exception e){
+				logger.error("finding username & mobilenumber"+e.getMessage());
+				throw new RegistrationException("finding username & mobilenumber");
+			}
 			if (!registerRepo.isPresent()&&!registerRepo1.isPresent()) {
 				registerationMeter.setPassword(passwordEncoder.encode(registerationMeter.getPassword()));
 				registerationMeter.setRole("user");
@@ -81,7 +88,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			logger.debug("RetrieveRegistration Started with User : {} ", userName);
 			
 			Optional<RegisterationMeter> registerRepo = registerRepository.findByUsername(userName);
-			Optional<RegisterationMeter> registerRepo1 = registerRepository.findBycontactNumber(userName);
+			Optional<RegisterationMeter> registerRepo1 = registerRepository.findByContactNumber(userName);
 			if(registerRepo.isPresent()&& registerRepo.get().getUsername()!=null) {
 				return registerRepo;
 			}else if(registerRepo1.isPresent()&& registerRepo1.get().getContactNumber()!=null) {

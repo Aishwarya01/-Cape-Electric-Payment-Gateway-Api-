@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.capeelectric.model.RegisterationMeter;
+
 /**
  * 
  * @author capeelectricsoftware
@@ -15,6 +16,7 @@ import com.capeelectric.model.RegisterationMeter;
 public interface RegistrationRepository extends CrudRepository<RegisterationMeter, Integer> {
 
 	public Optional<RegisterationMeter> findByUsername(String username);
-	public Optional<RegisterationMeter> findBycontactNumber(String username);
+
+	public Optional<RegisterationMeter> findByContactNumber(String username);
 
 }
