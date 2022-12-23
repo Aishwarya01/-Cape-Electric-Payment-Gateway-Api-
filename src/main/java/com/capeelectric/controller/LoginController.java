@@ -104,7 +104,7 @@ public class LoginController {
 		    	 registerRepo=registrationRepository.findByUsername(username);
 		     }
 		     else {
-		    	 registerRepo=registrationRepository.findBycontactNumber(username);
+		    	 registerRepo=registrationRepository.findByContactNumber(username);
 		     }
 		     
 		if (registerRepo.isPresent()) {

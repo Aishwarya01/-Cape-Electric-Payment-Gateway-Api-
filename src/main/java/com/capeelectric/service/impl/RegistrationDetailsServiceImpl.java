@@ -34,7 +34,7 @@ public class RegistrationDetailsServiceImpl extends RegisterationMeter implement
 			register=registrationRepository.findByUsername(username).get();
 		}
 		else {
-			register=registrationRepository.findBycontactNumber(username).get();
+			register=registrationRepository.findByContactNumber(username).get();
 		}
 		
 		  
