@@ -1,5 +1,6 @@
 package com.capeelectric.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,12 @@ public class PaymentServiceImp implements PaymentService {
 	@Override
 	public void addPaymentDetails(BuyRentMeter buyRentMeter) throws PaymentException {
 		if (null != buyRentMeter && null != buyRentMeter.getCustomerEmail()) {
-			buyRentMeter.setOrderStatus("Initiated");
+			buyRentMeter.setOrderStatus("INITIATED");
+			buyRentMeter.setCreatedDate(LocalDateTime.now());
+			buyRentMeter.setCreatedBy(buyRentMeter.getName());
+			buyRentMeter.setUpdatedBy(buyRentMeter.getName());
+			buyRentMeter.setUpdatedDate(LocalDateTime.now());
+			
 			logger.debug("Sucessfully saved meterdetails into DB");
 			paymentRepo.save(buyRentMeter);
 		} else {
@@ -44,6 +50,7 @@ public class PaymentServiceImp implements PaymentService {
 		Optional<BuyRentMeter> cutomerRepo = paymentRepo.findByOrderId(orderId);
 		if (cutomerRepo.isPresent()) {
 			logger.debug("Sucessfully updated OrderStatus into DB...  OrderStatus is [{}]",status);
+			cutomerRepo.get().setUpdatedDate(LocalDateTime.now());
 			cutomerRepo.get().setOrderStatus(status);
 			paymentRepo.save(cutomerRepo.get());
 		}
