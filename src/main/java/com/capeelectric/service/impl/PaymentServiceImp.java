@@ -1,5 +1,6 @@
 package com.capeelectric.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ public class PaymentServiceImp implements PaymentService {
 	@Override
 	public void addPaymentDetails(BuyRentMeter buyRentMeter) throws PaymentException {
 		if (null != buyRentMeter && null != buyRentMeter.getCustomerEmail()) {
+			buyRentMeter.setOrderStatus("Initiated");
 			logger.debug("Sucessfully saved meterdetails into DB");
 			paymentRepo.save(buyRentMeter);
 		} else {
@@ -41,10 +43,15 @@ public class PaymentServiceImp implements PaymentService {
 	public void updatePaymentStatus(String status, String orderId) {
 		Optional<BuyRentMeter> cutomerRepo = paymentRepo.findByOrderId(orderId);
 		if (cutomerRepo.isPresent()) {
-			logger.debug("Sucessfully updated OrderStatus into DB.. OrderStatus [{}]"+status);
+			logger.debug("Sucessfully updated OrderStatus into DB...  OrderStatus is [{}]",status);
 			cutomerRepo.get().setOrderStatus(status);
 			paymentRepo.save(cutomerRepo.get());
 		}
+	}
+
+	@Override
+	public List<BuyRentMeter> retrivePaymentStatus(String username) {
+		return paymentRepo.findByCustomerEmail(username);
 	}
 
 }

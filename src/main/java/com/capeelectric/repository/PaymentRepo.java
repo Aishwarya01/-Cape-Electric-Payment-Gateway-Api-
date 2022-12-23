@@ -1,5 +1,6 @@
 package com.capeelectric.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -15,5 +16,7 @@ import com.capeelectric.model.BuyRentMeter;
 public interface PaymentRepo extends CrudRepository<BuyRentMeter, Integer> {
 
 	public Optional<BuyRentMeter> findByOrderId(String orderId);
+
+	public List<BuyRentMeter> findByCustomerEmail(String username);
 
 }

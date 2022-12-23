@@ -2,6 +2,7 @@ package com.capeelectric.controller;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -11,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,21 +35,22 @@ import com.razorpay.RazorpayException;
 @RestController
 @RequestMapping("/api/v1")
 public class PaymentController {
-	
-	@Autowired
+
+	@Autowired	
 	private PaymentConfig paymentConfig;
-	
-	@Autowired
+
+	@Autowired	
 	private PaymentService paymentService;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
 	private RazorpayClient client;
-	
+
 	private static Gson gson = new Gson();
 
-	@PostMapping(value = "/createPayment") 
-	public ResponseEntity<String> createOrder(@RequestBody BuyRentMeter customer) throws RazorpayException, PaymentException {
+	@PutMapping(value = "/createPayment")
+	public ResponseEntity<String> createOrder(@RequestBody BuyRentMeter customer)
+			throws RazorpayException, PaymentException {
 		this.client = new RazorpayClient(paymentConfig.getSecretId(), paymentConfig.getSecretKey());
 		try {
 			logger.debug("Order creation started");
@@ -58,24 +60,25 @@ public class PaymentController {
 			paymentService.addPaymentDetails(customer);
 			return new ResponseEntity<String>(gson.toJson(getResponse(razorPay, 200)), HttpStatus.OK);
 		} catch (RazorpayException e) {
-			logger.debug("Order creation failed"+ e.getMessage());
-			return new ResponseEntity<String>(gson.toJson(getResponse(new RazorPay(), 500)), HttpStatus.EXPECTATION_FAILED);
+			logger.debug("Order creation failed" + e.getMessage());
+			return new ResponseEntity<String>(gson.toJson(getResponse(new RazorPay(), 500)),
+					HttpStatus.EXPECTATION_FAILED);
 		}
 	}
 
-//	@GetMapping(value = "/fetchOrder/{orderId}")
-//	public ResponseEntity<String> fetchOrder(@PathVariable String orderId) throws RazorpayException {
-//		this.client = new RazorpayClient(paymentConfig.getSecretId(), paymentConfig.getSecretKey());
-//		Order fetch = client.Orders.fetch(orderId);
-//		return new ResponseEntity<String>(fetch.get("status").toString(), HttpStatus.OK);
-//	}
+	@GetMapping(value = "/updatePaymentStatus/{status}/{orderId}")
+	public ResponseEntity<Void> updatePaymentStatus(@PathVariable String status, @PathVariable String orderId)
+			throws RazorpayException {	
+		logger.debug("updatePaymentStatus function started.. OrderId: {}, OrderStatus: {} ", orderId, status);
+		paymentService.updatePaymentStatus(status, orderId);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
 	
-	@GetMapping(value = "/verifyPayment/{orderId}")
-	public void updatePaymentStatus(@PathVariable String orderId) throws RazorpayException {
-		paymentService.updatePaymentStatus(
-				new RazorpayClient(paymentConfig.getSecretId(), paymentConfig.getSecretKey()).Orders.fetch(orderId)
-						.get("status").toString(),
-				orderId);
+	@GetMapping(value = "/retrivePaymentStatus/{username}")
+	public ResponseEntity<List<BuyRentMeter>> retrivePaymentStatus(@PathVariable String username)
+			throws RazorpayException {
+		logger.debug("retrivePaymentStatus function started.. username: {} ", username);
+		return new ResponseEntity<List<BuyRentMeter>>(paymentService.retrivePaymentStatus(username), HttpStatus.OK);
 	}
 
 	private Response getResponse(RazorPay razorPay, int statusCode) {
@@ -87,10 +90,10 @@ public class PaymentController {
 
 	private RazorPay getRazorPay(String orderId, BuyRentMeter customer) {
 		RazorPay razorPay = new RazorPay();
-		razorPay.setApplicationFee(convertRupeeToPaise(customer.getAmount()));
-//		razorPay.setCustomerName(customer.getCustomerName());
+//		razorPay.setApplicationFee(convertRupeeToPaise(customer.getAmount()));
+		razorPay.setCustomerName(customer.getName());
 		razorPay.setCustomerEmail(customer.getCustomerEmail());
-		razorPay.setRazorpayOrderId(orderId);
+		razorPay.setRazorpayOrderId(orderId);	
 		razorPay.setSecretKey(paymentConfig.getSecretId());
 		razorPay.setNotes("notes" + orderId);
 		return razorPay;
@@ -102,8 +105,8 @@ public class PaymentController {
 		options.put("amount",convertRupeeToPaise(amount));
 		// TODO need to changes
 		options.put("currency", "INR");
-		options.put("receipt", "txn_123456");
-		options.put("payment_capture", 1); // You can enable this if you want to do Auto Capture.
+//		options.put("receipt", "txn_123456");
+//		options.put("payment_capture", 1); // You can enable this if you want to do Auto Capture.
 		return client.Orders.create(options);
 	}
 
@@ -113,5 +116,4 @@ public class PaymentController {
 		return value.setScale(0, RoundingMode.UP).toString();
 
 	}
-
 }
