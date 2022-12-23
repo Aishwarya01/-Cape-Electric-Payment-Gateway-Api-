@@ -1,6 +1,7 @@
 package com.capeelectric.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,16 +25,16 @@ public class BuyRentMeter implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "CUSTOMER_ID")
 	private Integer customerId;
-	
+
 	@Column(name = "ORDER_ID")
 	private String orderId;
 
 	@Column(name = "CUSTOMER_EMAIL")
 	private String customerEmail;
-	
+
 	@Column(name = "METER_NAME")
 	private String meterName;
-	
+
 	@Column(name = "NUMBER_OF_METER")
 	private Integer numberOfMeter;
 
@@ -55,12 +56,24 @@ public class BuyRentMeter implements Serializable {
 	@Column(name = "STATE")
 	private String state;
 
+	@Column(name = "CREATED_DATE")
+	private LocalDateTime createdDate;
+
+	@Column(name = "UPDATED_DATE")
+	private LocalDateTime updatedDate;
+
+	@Column(name = "CREATED_BY")
+	private String createdBy;
+
+	@Column(name = "UPDATED_BY")
+	private String updatedBy;
+
 	@Column(name = "AMOUNT")
 	private String amount;
 
 	@Column(name = "ORDER_STATUS")
 	private String orderStatus;
-	
+
 	@Transient
 	private String name;
 
@@ -174,6 +187,38 @@ public class BuyRentMeter implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public LocalDateTime getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(LocalDateTime updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 
 }
