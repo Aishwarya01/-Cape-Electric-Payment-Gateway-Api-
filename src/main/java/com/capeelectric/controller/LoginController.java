@@ -2,28 +2,36 @@ package com.capeelectric.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capeelectric.config.JwtTokenUtil;
 import com.capeelectric.exception.AuthenticationException;
+import com.capeelectric.exception.ForgotPasswordException;
 import com.capeelectric.exception.RegistrationException;
+import com.capeelectric.exception.UpdatePasswordException;
 import com.capeelectric.model.RegisterDetails;
 import com.capeelectric.model.RegisterationMeter;
 import com.capeelectric.repository.RegistrationRepository;
+import com.capeelectric.request.AuthenticationRequest;
 import com.capeelectric.request.RefreshTokenRequest;
 import com.capeelectric.response.AuthenticationResponseRegister;
 import com.capeelectric.service.impl.LoginServiceImpl;
@@ -123,6 +131,24 @@ public class LoginController {
 			logger.error("There is no registered user available for this email");
 			throw new RegistrationException("There is no registered user available for this email");
 		}
+	}
+	
+	@GetMapping("/forgotPassword/{email}")
+	public ResponseEntity<String> forgotPassword(@PathVariable String email)
+			throws ForgotPasswordException, IOException, RegistrationException {
+		logger.debug("forgotPassword started");
+		String sessionKey = loginService.findByUserNameOrContactNumber(email);
+		return new ResponseEntity<String>(sessionKey, HttpStatus.OK);
+
+	}
+
+	@PutMapping("/createPassword")
+	public ResponseEntity<String> createPassword(@RequestBody AuthenticationRequest request)
+			throws UpdatePasswordException, IOException {
+		logger.debug("CreatePassword starts");
+		loginService.createPassword(request);
+		return new ResponseEntity<String>("You have successfully created/modified your password", HttpStatus.OK);
+
 	}
 }
     
