@@ -74,7 +74,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 						"/api/v1/sendSMS/**",
 						"/api/v1/verifyOTP",
 						"/api/v1/logout",
-						"/api/v1/sendSMSUsername/**")
+						"/api/v1/sendSMSUsername/**",
+						"/api/v1/forgotPassword/**",
+						"api/v1/createPassword")
 				
 				.permitAll().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().
 				// all other requests need to be authenticated

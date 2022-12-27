@@ -81,8 +81,17 @@ public class LoginServiceImpl {
 	public RegisterationMeter createPassword(AuthenticationRequest request) throws UpdatePasswordException {
 		logger.debug("createPassword Starts");
 		if (request.getEmail() != null && request.getPassword() != null) {
-			RegisterationMeter register = registrationRepository.findByUsername(request.getEmail()).get();
-			if (register != null && register.getUsername().equalsIgnoreCase(request.getEmail())) {
+			RegisterationMeter register = null;
+			
+			if (request.getEmail() != null && request.getEmail().contains("@")) {
+				register = registrationRepository.findByUsername(request.getEmail()).get();
+
+			} else {
+				register = registrationRepository.findByContactNumber(request.getEmail()).get();
+
+			}
+
+			if (register != null) {
 				register.setPassword(passwordEncoder.encode(request.getPassword()));
 				register.setUpdatedDate(LocalDateTime.now());
 				register.setUpdatedBy(request.getEmail());
@@ -98,4 +107,26 @@ public class LoginServiceImpl {
 		}
 	}
 
+	public RegisterationMeter changePassword(String email, String oldPassword, String password)
+			throws ForgotPasswordException {
+		logger.debug("Change Password Starts");
+		RegisterationMeter registerRepo = registrationRepository.findByUsername(email).get();
+		if (!passwordEncoder.matches(oldPassword, registerRepo.getPassword())) {
+			logger.error("Old password is not matching with encoded password");
+			throw new ForgotPasswordException("Old password is not matching with encoded password");
+		} else if (oldPassword.equalsIgnoreCase(password)) {
+			logger.error("Old password cannot be entered as new password");
+			throw new ForgotPasswordException("Old password cannot be entered as new password");
+		} else {
+			if (registerRepo != null && registerRepo.getUsername().equalsIgnoreCase(email)) {
+				registerRepo.setPassword(passwordEncoder.encode(password));
+				registerRepo.setUpdatedDate(LocalDateTime.now());
+				registerRepo.setUpdatedBy(email);
+				logger.debug("Update User Ends");
+				return registrationRepository.save(registerRepo);
+			}
+		}
+		return null;
+	}
+	
 }

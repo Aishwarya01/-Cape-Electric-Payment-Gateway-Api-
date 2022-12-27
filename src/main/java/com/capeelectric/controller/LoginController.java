@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Optional;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import com.capeelectric.exception.AuthenticationException;
 import com.capeelectric.exception.ForgotPasswordException;
 import com.capeelectric.exception.RegistrationException;
 import com.capeelectric.exception.UpdatePasswordException;
+import com.capeelectric.model.ChangePasswordRequest;
 import com.capeelectric.model.RegisterDetails;
 import com.capeelectric.model.RegisterationMeter;
 import com.capeelectric.repository.RegistrationRepository;
@@ -150,5 +152,17 @@ public class LoginController {
 		return new ResponseEntity<String>("You have successfully created/modified your password", HttpStatus.OK);
 
 	}
+	
+	@PutMapping("/changePassword")
+	public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request)
+			throws IOException, ForgotPasswordException {
+		
+		logger.debug("Change Password Starts");
+		loginService.changePassword(request.getEmail(), request.getOldPassword(),
+				request.getPassword());
+		return new ResponseEntity<String>("You have successfully changed your password", HttpStatus.OK);
+		
+	}
+
 }
     
